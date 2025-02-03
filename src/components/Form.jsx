@@ -25,7 +25,7 @@ const Form = () => {
         setForm({site:"", username:"", password:""});
     }
     return (
-        <div className="container mx-auto w-1/2 my-10 backdrop-blur-sm bg-transparent">
+        <div className="container mx-auto sm:w-full md:w-1/2 my-10 backdrop-blur-sm bg-transparent">
             <form className=" rounded-xl shadow-md px-8 pt-6 pb-8 mb-4">
                 <div className="mb-4">
                     <input
