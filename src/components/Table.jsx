@@ -3,7 +3,24 @@ import {passwordArrayContext} from "../context/passwordArray.js";
 import { toast } from 'react-toastify';
 
 const Table = () => {
-    const {passwordArray} = useContext(passwordArrayContext);
+    const {passwordArray, setPasswordArray} = useContext(passwordArrayContext);
+    const handleDelete = (id) => {
+        const confirm = window.confirm("Are you sure you want to delete this password?");
+        if (!confirm) return;
+        const updatedPasswords = passwordArray.filter(item => item.id !== id);
+        localStorage.setItem("passwords", JSON.stringify(updatedPasswords));
+        setPasswordArray(updatedPasswords);
+        toast.success('Password Deleted Successfully', {
+            position: "bottom-left",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
     return (
         <table className="table-auto text-gray-200 w-full rounded-lg overflow-hidden">
             <thead className="bg-indigo-900">
@@ -18,7 +35,7 @@ const Table = () => {
             {
                 passwordArray.length === 0 ?
                     <tr>
-                        <td colSpan={3} className="text-center">No Data Saved</td>
+                        <td colSpan={4} className="text-center">No Data Saved</td>
                     </tr>
                     :
                     passwordArray.map((item, index) => (
@@ -76,7 +93,7 @@ const Table = () => {
                             </td>
                             <td className="w-[25%] text-center border border-gray-400">
                                 <div className="w-full flex gap-1 justify-center items-center">
-                                    {item.password}
+                                    {"*".repeat(item.password.length)}
                                     <lord-icon
                                         onClick={
                                             () => {
@@ -101,42 +118,13 @@ const Table = () => {
                             </td>
                             <td className="w-[25%] text-center border border-gray-400">
                                 <div className="w-full flex gap-2 justify-center items-center">
-                                    <lord-icon
-                                        onClick={
-                                            () => {
-                                                navigator.clipboard.writeText(item.password);
-                                                toast.success('Password Copied to Clipboard', {
-                                                    position: "bottom-left",
-                                                    autoClose: 2000,
-                                                    hideProgressBar: false,
-                                                    closeOnClick: false,
-                                                    pauseOnHover: false,
-                                                    draggable: false,
-                                                    progress: undefined,
-                                                    theme: "dark",
-                                                });
-                                            }
-                                        }
+                                    {/*<lord-icon
                                         src="https://cdn.lordicon.com/gwlusjdu.json"
                                         trigger="hover"
                                         style={{"cursor": "pointer", "width": "25px"}}>
-                                    </lord-icon>
+                                    </lord-icon>*/}
                                     <lord-icon
-                                        onClick={
-                                            () => {
-                                                navigator.clipboard.writeText(item.password);
-                                                toast.success('Password Copied to Clipboard', {
-                                                    position: "bottom-left",
-                                                    autoClose: 2000,
-                                                    hideProgressBar: false,
-                                                    closeOnClick: false,
-                                                    pauseOnHover: false,
-                                                    draggable: false,
-                                                    progress: undefined,
-                                                    theme: "dark",
-                                                });
-                                            }
-                                        }
+                                        onClick={()=>handleDelete(item.id)}
                                         src="https://cdn.lordicon.com/skkahier.json"
                                         trigger="hover"
                                         style={{"cursor": "pointer", "width": "25px"}}>

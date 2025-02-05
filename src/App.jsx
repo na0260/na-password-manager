@@ -18,7 +18,7 @@ function App() {
     return (
         <>
             <passwordArrayContext.Provider value={{passwordArray, setPasswordArray}}>
-                <div className="container mx-auto sm:w-full md:w-1/2 my-10 backdrop-blur-sm bg-transparent">
+                <div className="container mx-auto sm:w-full md:w-1/2 my-10 px-4">
                     <Form/>
                     <Table/>
                 </div>

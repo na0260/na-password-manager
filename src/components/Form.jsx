@@ -1,5 +1,7 @@
 import {React, useRef, useState, useContext} from 'react';
 import {passwordArrayContext} from "../context/passwordArray.js";
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 const Form = () => {
     const ref = useRef();
@@ -21,28 +23,51 @@ const Form = () => {
     }
 
     const saveForm = () => {
+        if (!form.site || !form.username || !form.password) {
+            toast.error('Please fill all the fields', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "dark",
+            })
+            return;
+        }
         setPasswordArray(prevPasswords => {
-            const updatedPasswords = [...prevPasswords, form];
+            const updatedPasswords = [...prevPasswords, {...form, id: uuidv4()}];
             localStorage.setItem("passwords", JSON.stringify(updatedPasswords));
             return updatedPasswords;
         });
 
         setForm({ site: "", username: "", password: "" });
+        toast.success('Password Added Successfully', {
+            position: "bottom-left",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "dark",
+        });
     };
     return (
-        <form className=" rounded-xl shadow-md px-8 pt-6 pb-8 mb-4">
+        <form className=" rounded-xl shadow-md py-8 mb-4">
             <div className="mb-4">
                 <input
                     value={form.site} onChange={handleChange}
                     className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:shadow-outline"
                     name="site" type="text" placeholder="Enter Website name" autoComplete={0}/>
             </div>
-            <div className="mb-6 flex flex-row gap-4">
+            <div className="mb-6 md:flex flex-row gap-4">
                 <div className="w-full">
                     <input
                         value={form.username} onChange={handleChange}
                         className="shadow appearance-none border rounded-full w-full py-2 px-3 text-gray-100  mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                        name="username" type="text" placeholder="Enter Username/mail" autoComplete={0}/>
+                        name="username" type="text" placeholder="Enter Username / Email" autoComplete={0}/>
                 </div>
 
                 <div className="relative w-full">
